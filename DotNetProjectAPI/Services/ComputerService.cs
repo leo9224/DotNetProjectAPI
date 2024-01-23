@@ -1,14 +1,17 @@
 ﻿using DotNetProjectAPI.Models;
+using Type = DotNetProjectAPI.Models.Type;
 
 namespace DotNetProjectAPI.Services
 {
     public class ComputerService
     {
         private readonly AppDbContext AppDbContext;
+        private readonly TypeService TypeService;
 
-        public ComputerService(AppDbContext appDbContext)
+        public ComputerService(AppDbContext appDbContext, TypeService typeService)
         {
             AppDbContext = appDbContext;
+            TypeService = typeService;
         }
 
         public List<Computer> GetAll() => AppDbContext.computer.ToList();
@@ -34,6 +37,22 @@ namespace DotNetProjectAPI.Services
             if (computer is null) return null;
 
             AppDbContext.computer.Remove(computer);
+            AppDbContext.SaveChanges();
+
+            return computer;
+        }
+
+        public Computer? UpdateType(int id, int newTypeId)
+        {
+            Computer? computer = Get(id);
+            Type? type = TypeService.Get(newTypeId);
+
+            if (computer is null || type is null) return null;
+
+            computer.type_id = newTypeId;
+            computer.updated_at = DateTime.UtcNow;
+
+            AppDbContext.Update(computer);
             AppDbContext.SaveChanges();
 
             return computer;

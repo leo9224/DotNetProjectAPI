@@ -55,5 +55,15 @@ namespace DotNetProjectAPI.Controllers
 
             return Ok();
         }
+
+        [HttpPut("{id}/{newTypeId}")]
+        public IActionResult Update(int id, int newTypeId)
+        {
+            Computer? newComputer = ComputerService.UpdateType(id, newTypeId);
+
+            if (newComputer is null) return NotFound();
+
+            return Ok();
+        }
     }
 }
