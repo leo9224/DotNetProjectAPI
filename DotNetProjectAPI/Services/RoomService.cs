@@ -15,7 +15,13 @@ namespace DotNetProjectAPI.Services
 
         public Room? Get(int id) => AppDbContext.room.ToList().Find(room => room.id == id);
 
-        public List<Room> GetByPark(int id) => AppDbContext.room.Where(room => room.park_id == id).ToList();
+        public List<Room> GetByPark(int id)
+        {
+            List<Room> rooms=AppDbContext.room.Where(room => room.park_id == id).ToList();
+            rooms.Sort((room1,room2)=>string.Compare(room1.name,room2.name));
+
+            return rooms;
+        }
 
         public void Add(Room room)
         {

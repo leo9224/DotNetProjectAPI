@@ -18,7 +18,13 @@ namespace DotNetProjectAPI.Services
 
         public Computer? Get(int id) => AppDbContext.computer.ToList().Find(computer => computer.id == id);
 
-        public List<Computer> GetByRoom(int id) => AppDbContext.computer.Where(computer => computer.room_id == id).ToList();
+        public List<Computer> GetByRoom(int id)
+        {
+            List<Computer> computers = AppDbContext.computer.Where(computer => computer.room_id == id).ToList();
+            computers.Sort((computer1, computer2) => string.Compare(computer1.name, computer2.name));
+
+            return computers;
+        }
 
         public void Add(Computer computer)
         {

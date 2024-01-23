@@ -11,7 +11,13 @@ namespace DotNetProjectAPI.Services
             AppDbContext = appDbContext;
         }
 
-        public List<Park> GetAll() => AppDbContext.park.ToList();
+        public List<Park> GetAll()
+        {
+            List<Park> parks=AppDbContext.park.ToList();
+            parks.Sort((park1, park2) => string.Compare(park1.name, park2.name));
+
+            return parks;
+        }
 
         public Park? Get(int id) => AppDbContext.park.ToList().Find(park => park.id == id);
 
