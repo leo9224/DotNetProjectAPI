@@ -1,5 +1,5 @@
-﻿using DotNetProjectAPI.Models;
-using Type = DotNetProjectAPI.Models.Type;
+﻿using DotNetProjectLibrary.Models;
+using Type = DotNetProjectLibrary.Models.Type;
 
 namespace DotNetProjectAPI.Services
 {

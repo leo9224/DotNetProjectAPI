@@ -1,4 +1,4 @@
-﻿using DotNetProjectAPI.Models;
+﻿using DotNetProjectLibrary.Models;
 using DotNetProjectAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

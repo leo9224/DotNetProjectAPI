@@ -15,4 +15,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="DotNetProjectLibrary">
+      <HintPath>..\..\DotNetProjectLibrary\DotNetProjectLibrary\bin\Release\net8.0\DotNetProjectLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

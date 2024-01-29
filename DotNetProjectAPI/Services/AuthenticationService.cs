@@ -1,4 +1,4 @@
-﻿using DotNetProjectAPI.Models;
+﻿using DotNetProjectLibrary.Models;
 
 namespace DotNetProjectAPI.Services
 {

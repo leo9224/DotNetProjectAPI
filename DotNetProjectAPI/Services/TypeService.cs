@@ -1,4 +1,4 @@
-﻿using Type = DotNetProjectAPI.Models.Type;
+﻿using Type = DotNetProjectLibrary.Models.Type;
 
 namespace DotNetProjectAPI.Services
 {

@@ -1,6 +1,6 @@
-﻿using DotNetProjectAPI.Models;
+﻿using DotNetProjectLibrary.Models;
 using Microsoft.EntityFrameworkCore;
-using Type = DotNetProjectAPI.Models.Type;
+using Type = DotNetProjectLibrary.Models.Type;
 
 namespace DotNetProjectAPI
 {

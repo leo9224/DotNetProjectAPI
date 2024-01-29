@@ -1,7 +1,7 @@
 ﻿using DotNetProjectAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Type = DotNetProjectAPI.Models.Type;
+using Type = DotNetProjectLibrary.Models.Type;
 
 namespace DotNetProjectAPI.Controllers
 {
