@@ -37,7 +37,8 @@ namespace DotNetProjectAPI.Services
 
             if (park is null) return null;
 
-            AppDbContext.park.Remove(park);
+            park.is_enabled = false;
+            AppDbContext.park.Update(park);
             AppDbContext.SaveChanges();
 
             return park;
