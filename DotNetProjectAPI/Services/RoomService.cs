@@ -39,7 +39,9 @@ namespace DotNetProjectAPI.Services
 
             if (room is null) return null;
 
-            AppDbContext.room.Remove(room);
+            room.is_enabled = false;
+
+            AppDbContext.room.Update(room);
             AppDbContext.SaveChanges();
 
             return room;
