@@ -21,7 +21,7 @@ namespace DotNetProjectAPI.Services
 
         public Park? Get(int id) => AppDbContext.park.ToList().Find(park => park.id == id);
 
-        public void Add(Park park)
+        public Park Add(Park park)
         {
             park.created_at = DateTime.UtcNow;
             park.updated_at = null;
@@ -29,6 +29,26 @@ namespace DotNetProjectAPI.Services
 
             AppDbContext.park.Add(park);
             AppDbContext.SaveChanges();
+
+            return park;
+        }
+
+        public Park? Update(int id, Park park)
+        {
+            Park? currentPark = Get(id);
+
+            if (id != park.id) return null;
+
+            if (currentPark is null) return null;
+
+            park.created_at = currentPark.created_at;
+            park.updated_at = DateTime.UtcNow;
+            park.is_enabled = currentPark.is_enabled;
+
+            AppDbContext.park.Update(park);
+            AppDbContext.SaveChanges();
+
+            return park;
         }
 
         public Park? Delete(int id)

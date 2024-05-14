@@ -31,11 +31,21 @@ namespace DotNetProjectAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Park park)
+        public ActionResult<Park> Create(Park park)
         {
-            ParkService.Add(park);
+            Park newPark = ParkService.Add(park);
 
-            return CreatedAtAction(nameof(Get), new { id = park.id }, park);
+            return newPark;
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, Park park)
+        {
+            Park? updatedPark = ParkService.Update(id, park);
+
+            if (park is null) return NotFound();
+
+            return Ok(updatedPark);
         }
 
         [HttpDelete("{id}")]
@@ -45,7 +55,7 @@ namespace DotNetProjectAPI.Controllers
 
             if (park is null) return NotFound();
 
-            return Ok();
+            return Ok(park);
         }
     }
 }
