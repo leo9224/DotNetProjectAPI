@@ -32,7 +32,18 @@ namespace DotNetProjectAPI.Services
             computer.updated_at = null;
             computer.is_enabled = true;
 
-            AppDbContext.computer.Add(computer);
+            List<Computer> computers = GetByRoom((int)computer.room_id);
+			List<Computer> existComputer = computers.Where(currentComputer => currentComputer.name == computer.name).ToList();
+
+            if (existComputer.Count > 0)
+            {
+				AppDbContext.computer.Update(computer);
+			}
+            else
+            {
+				AppDbContext.computer.Add(computer);
+			}
+			
             AppDbContext.SaveChanges();
         }
 
