@@ -1,14 +1,18 @@
 ﻿using DotNetProjectLibrary.Models;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Logging;
 
 namespace DotNetProjectAPI.Services
 {
     public class ParkService
     {
         private readonly AppDbContext AppDbContext;
+        private readonly ILogger<ParkService> Logger;
 
-        public ParkService(AppDbContext appDbContext)
+        public ParkService(AppDbContext appDbContext, ILogger<ParkService> logger)
         {
             AppDbContext = appDbContext;
+            Logger = logger;
         }
 
         public List<Park> GetAll()
@@ -27,8 +31,10 @@ namespace DotNetProjectAPI.Services
             park.updated_at = null;
             park.is_enabled = true;
 
-            AppDbContext.park.Add(park);
+            EntityEntry<Park> addedPark = AppDbContext.park.Add(park);
             AppDbContext.SaveChanges();
+
+            Logger.LogInformation($"Park created with id {addedPark.Entity.id}");
 
             return park;
         }
@@ -43,8 +49,10 @@ namespace DotNetProjectAPI.Services
 
             currentPark.name = park.name;
 
-            AppDbContext.park.Update(currentPark);
+            EntityEntry<Park> updatedPark = AppDbContext.park.Update(currentPark);
             AppDbContext.SaveChanges();
+
+            Logger.LogInformation($"Park with ID {updatedPark.Entity.id} updated");
 
             return park;
         }
@@ -57,8 +65,10 @@ namespace DotNetProjectAPI.Services
 
             park.is_enabled = false;
 
-            AppDbContext.park.Update(park);
+            EntityEntry<Park> updatedPark = AppDbContext.park.Update(park);
             AppDbContext.SaveChanges();
+
+            Logger.LogInformation($"Park with ID {updatedPark.Entity.id} deleted");
 
             return park;
         }

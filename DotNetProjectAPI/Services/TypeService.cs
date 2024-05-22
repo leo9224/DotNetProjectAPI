@@ -1,14 +1,19 @@
-﻿using Type = DotNetProjectLibrary.Models.Type;
+﻿using DotNetProjectLibrary.Models;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Logging;
+using Type = DotNetProjectLibrary.Models.Type;
 
 namespace DotNetProjectAPI.Services
 {
     public class TypeService
     {
         private readonly AppDbContext AppDbContext;
+        private readonly ILogger<TypeService> Logger;
 
-        public TypeService(AppDbContext appDbContext)
+        public TypeService(AppDbContext appDbContext, ILogger<TypeService> logger)
         {
             AppDbContext = appDbContext;
+            Logger = logger;
         }
 
         public List<Type> GetAll() => AppDbContext.type.ToList();
@@ -22,8 +27,10 @@ namespace DotNetProjectAPI.Services
             type.updated_at = null;
             type.is_enabled = true;
 
-            AppDbContext.type.Add(type);
+            EntityEntry<Type> addedType = AppDbContext.type.Add(type);
             AppDbContext.SaveChanges();
+
+            Logger.LogInformation($"Type created with id {addedType.Entity.id}");
         }
 
         public Type? Delete(int id)
@@ -32,8 +39,10 @@ namespace DotNetProjectAPI.Services
 
             if (type is null) return null;
 
-            AppDbContext.type.Remove(type);
+            EntityEntry<Type> deletedType = AppDbContext.type.Remove(type);
             AppDbContext.SaveChanges();
+
+            Logger.LogInformation($"Park with ID {deletedType.Entity.id} deleted");
 
             return type;
         }

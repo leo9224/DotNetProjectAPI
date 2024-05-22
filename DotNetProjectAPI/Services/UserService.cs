@@ -1,14 +1,18 @@
 ﻿using DotNetProjectLibrary.Models;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Logging;
 
 namespace DotNetProjectAPI.Services
 {
     public class UserService
     {
         private readonly AppDbContext AppDbContext;
+        private readonly ILogger<UserService> Logger;
 
-        public UserService(AppDbContext appDbContext)
+        public UserService(AppDbContext appDbContext, ILogger<UserService> logger)
         {
             AppDbContext = appDbContext;
+            Logger = logger;
         }
 
         public List<User> GetAll()
@@ -31,9 +35,11 @@ namespace DotNetProjectAPI.Services
             user.created_at = DateTime.UtcNow;
             user.updated_at = null;
             user.is_enabled = true;
-            
-            AppDbContext.user.Add(user);
+
+            EntityEntry<User> addedUser = AppDbContext.user.Add(user);
             AppDbContext.SaveChanges();
+
+            Logger.LogInformation($"User created with id {addedUser.Entity.id}");
         }
 
         public User? Delete(int id)
@@ -42,8 +48,10 @@ namespace DotNetProjectAPI.Services
 
             if (user is null) return null;
 
-            AppDbContext.user.Remove(user);
+            EntityEntry<User> deletedUser = AppDbContext.user.Remove(user);
             AppDbContext.SaveChanges();
+
+            Logger.LogInformation($"Park with ID {deletedUser.Entity.id} deleted");
 
             return user;
         }
@@ -57,8 +65,10 @@ namespace DotNetProjectAPI.Services
             user.password = PasswordHasher.HashPassword(newPassword, out string salt);
             user.salt = salt;
 
-            AppDbContext.Update(user);
+            EntityEntry<User> updatedUser = AppDbContext.Update(user);
             AppDbContext.SaveChanges();
+
+            Logger.LogInformation($"Password of user with ID {updatedUser.Entity.id} updated");
 
             return user;
         }

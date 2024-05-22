@@ -1,4 +1,6 @@
 ﻿using DotNetProjectLibrary.Models;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using static System.Net.Mime.MediaTypeNames;
 using Type = DotNetProjectLibrary.Models.Type;
 
 namespace DotNetProjectAPI.Services
@@ -7,11 +9,13 @@ namespace DotNetProjectAPI.Services
     {
         private readonly AppDbContext AppDbContext;
         private readonly TypeService TypeService;
+        private readonly ILogger<ComputerService> Logger;
 
-        public ComputerService(AppDbContext appDbContext, TypeService typeService)
+        public ComputerService(AppDbContext appDbContext, TypeService typeService, ILogger<ComputerService> logger)
         {
             AppDbContext = appDbContext;
             TypeService = typeService;
+            Logger = logger;
         }
 
         public List<Computer> GetAll() => AppDbContext.computer.ToList();
@@ -37,13 +41,15 @@ namespace DotNetProjectAPI.Services
 
             if (existComputer.Count > 0)
             {
-				AppDbContext.computer.Update(computer);
-			}
+                EntityEntry<Computer> updatedComputer = AppDbContext.computer.Update(computer);
+                Logger.LogInformation($"Computer with ID {updatedComputer.Entity.id} updated");
+            }
             else
             {
-				AppDbContext.computer.Add(computer);
-			}
-			
+				EntityEntry<Computer> addedComputer = AppDbContext.computer.Add(computer);
+                Logger.LogInformation($"Computer created with id {addedComputer.Entity.id}");
+            }
+
             AppDbContext.SaveChanges();
         }
 
@@ -55,6 +61,8 @@ namespace DotNetProjectAPI.Services
 
             AppDbContext.computer.Remove(computer);
             AppDbContext.SaveChanges();
+
+            Logger.LogInformation($"Computer with ID {id} deleted");
 
             return computer;
         }

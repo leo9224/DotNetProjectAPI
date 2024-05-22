@@ -5,10 +5,12 @@ namespace DotNetProjectAPI.Services
     public class AuthenticationService
     {
         private readonly AppDbContext AppDbContext;
+        private readonly ILogger<AuthenticationService> Logger;
 
-        public AuthenticationService(AppDbContext appDbContext)
+        public AuthenticationService(AppDbContext appDbContext, ILogger<AuthenticationService> logger)
         {
             AppDbContext = appDbContext;
+            Logger = logger;
         }
 
         public User? Authenticate(string email, string password)
@@ -19,10 +21,12 @@ namespace DotNetProjectAPI.Services
             {
                 if (PasswordHasher.VerifyPassword(password, user.password, user.salt))
                 {
+                    Logger.LogInformation($"User {email} authenticate succesfully");
                     return user;
                 }
             }
 
+            Logger.LogError($"Authentication failed for user {email}");
             return null;
         }
     }

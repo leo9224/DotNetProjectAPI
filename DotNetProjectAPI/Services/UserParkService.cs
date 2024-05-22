@@ -1,14 +1,18 @@
 ﻿using DotNetProjectLibrary.Models;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Logging;
 
 namespace DotNetProjectAPI.Services
 {
     public class UserParkService
     {
         private readonly AppDbContext AppDbContext;
+        private readonly ILogger<UserParkService> Logger;
 
-        public UserParkService(AppDbContext appDbContext)
+        public UserParkService(AppDbContext appDbContext, ILogger<UserParkService> logger)
         {
             AppDbContext = appDbContext;
+            Logger = logger;
         }
 
         public List<UserPark> GetAll() => AppDbContext.user_park.ToList();
@@ -19,8 +23,10 @@ namespace DotNetProjectAPI.Services
 
         public void Add(UserPark userPark)
         {
-            AppDbContext.user_park.Add(userPark);
+            EntityEntry<UserPark> addedUserPark = AppDbContext.user_park.Add(userPark);
             AppDbContext.SaveChanges();
+
+            Logger.LogInformation($"Add authorization on park {userPark.park_id} for user {userPark.user_id}");
         }
 
         public UserPark? Delete(UserPark userPark)
@@ -29,8 +35,10 @@ namespace DotNetProjectAPI.Services
 
             if (actualUserPark is null) return null;
 
-            AppDbContext.user_park.Remove(actualUserPark);
+            EntityEntry<UserPark> deletedUserPark = AppDbContext.user_park.Remove(actualUserPark);
             AppDbContext.SaveChanges();
+
+            Logger.LogInformation($"Remove authorization on park {userPark.park_id} for user {userPark.user_id}");
 
             return actualUserPark;
         }

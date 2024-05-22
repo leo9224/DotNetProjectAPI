@@ -1,14 +1,17 @@
 ﻿using DotNetProjectLibrary.Models;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace DotNetProjectAPI.Services
 {
     public class RoomService
     {
         private readonly AppDbContext AppDbContext;
+        private readonly ILogger<RoomService> Logger;
 
-        public RoomService(AppDbContext appDbContext)
+        public RoomService(AppDbContext appDbContext, ILogger<RoomService> logger)
         {
             AppDbContext = appDbContext;
+            Logger = logger;
         }
 
         public List<Room> GetAll() => AppDbContext.room.ToList();
@@ -29,8 +32,10 @@ namespace DotNetProjectAPI.Services
             room.updated_at = null;
             room.is_enabled = true;
 
-            AppDbContext.room.Add(room);
+            EntityEntry<Room> addedRoom = AppDbContext.room.Add(room);
             AppDbContext.SaveChanges();
+
+            Logger.LogInformation($"Room created with id {addedRoom.Entity.id}");
         }
 
         public Room? Update(int id, Room room)
@@ -43,8 +48,10 @@ namespace DotNetProjectAPI.Services
 
             currentRoom.name = room.name;
 
-            AppDbContext.room.Update(currentRoom);
+            EntityEntry<Room> updatedRoom = AppDbContext.room.Update(currentRoom);
             AppDbContext.SaveChanges();
+
+            Logger.LogInformation($"Room with ID {updatedRoom.Entity.id} updated");
 
             return room;
         }
@@ -57,8 +64,10 @@ namespace DotNetProjectAPI.Services
 
             room.is_enabled = false;
 
-            AppDbContext.room.Update(room);
+            EntityEntry<Room> updatedRoom = AppDbContext.room.Update(room);
             AppDbContext.SaveChanges();
+
+            Logger.LogInformation($"Park with ID {updatedRoom.Entity.id} deleted");
 
             return room;
         }
