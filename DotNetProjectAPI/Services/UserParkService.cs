@@ -1,6 +1,5 @@
 ﻿using DotNetProjectLibrary.Models;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.Extensions.Logging;
 
 namespace DotNetProjectAPI.Services
 {
