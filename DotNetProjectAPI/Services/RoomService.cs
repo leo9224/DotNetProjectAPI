@@ -33,6 +33,22 @@ namespace DotNetProjectAPI.Services
             AppDbContext.SaveChanges();
         }
 
+        public Room? Update(int id, Room room)
+        {
+            Room? currentRoom = Get(id);
+
+            if (id != room.id) return null;
+
+            if (currentRoom is null) return null;
+
+            currentRoom.name = room.name;
+
+            AppDbContext.room.Update(currentRoom);
+            AppDbContext.SaveChanges();
+
+            return room;
+        }
+
         public Room? Delete(int id)
         {
             Room? room = Get(id);

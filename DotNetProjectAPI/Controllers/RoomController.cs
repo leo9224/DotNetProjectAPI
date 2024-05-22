@@ -46,6 +46,16 @@ namespace DotNetProjectAPI.Controllers
             return CreatedAtAction(nameof(Get), new { id = room.id }, room);
         }
 
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, Room room)
+        {
+            Room? updatedRoom = RoomService.Update(id, room);
+
+            if (room is null) return NotFound();
+
+            return Ok(updatedRoom);
+        }
+
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

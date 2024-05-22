@@ -41,11 +41,9 @@ namespace DotNetProjectAPI.Services
 
             if (currentPark is null) return null;
 
-            park.created_at = currentPark.created_at;
-            park.updated_at = DateTime.UtcNow;
-            park.is_enabled = currentPark.is_enabled;
+            currentPark.name = park.name;
 
-            AppDbContext.park.Update(park);
+            AppDbContext.park.Update(currentPark);
             AppDbContext.SaveChanges();
 
             return park;
