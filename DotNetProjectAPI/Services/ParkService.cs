@@ -47,6 +47,7 @@ namespace DotNetProjectAPI.Services
             if (currentPark is null) return null;
 
             currentPark.name = park.name;
+            currentPark.updated_at= DateTime.UtcNow;
 
             EntityEntry<Park> updatedPark = AppDbContext.park.Update(currentPark);
             AppDbContext.SaveChanges();

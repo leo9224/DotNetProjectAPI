@@ -1,4 +1,5 @@
-﻿using DotNetProjectLibrary.Models;
+﻿using System.Diagnostics;
+using DotNetProjectLibrary.Models;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Type = DotNetProjectLibrary.Models.Type;
 
@@ -35,19 +36,36 @@ namespace DotNetProjectAPI.Services
             computer.updated_at = null;
             computer.is_enabled = true;
 
-            List<Computer> computers = GetByRoom((int)computer.room_id);
-			List<Computer> existComputer = computers.Where(currentComputer => currentComputer.name == computer.name).ToList();
+            if (computer.room_id != null)
+            {
+                List<Computer> computers = GetByRoom((int)computer.room_id);
+                List<Computer> existComputer = computers.Where(currentComputer => currentComputer.name == computer.name).ToList();
+                Trace.WriteLine("test exist computer" + existComputer.Count());
 
-            if (existComputer.Count > 0)
-            {
-                EntityEntry<Computer> updatedComputer = AppDbContext.computer.Update(computer);
-                Logger.LogInformation($"Computer with ID {updatedComputer.Entity.id} updated");
+                if (existComputer.Count == 1)
+                {
+                    Computer? currentComputer = Get(existComputer[0].id);
+
+                    if (currentComputer != null)
+                    {
+                        currentComputer.updated_at = DateTime.UtcNow;
+                        currentComputer.os = computer.os;
+                        currentComputer.os_version = computer.os_version;
+                        currentComputer.status = computer.status;
+                        currentComputer.type_id = computer.type_id;
+
+                        EntityEntry<Computer> updatedComputer = AppDbContext.computer.Update(currentComputer);
+                        Logger.LogInformation($"Computer with ID {updatedComputer.Entity.id} updated");
+
+                        AppDbContext.SaveChanges();
+
+                        return;
+                    }
+                }
             }
-            else
-            {
-				EntityEntry<Computer> addedComputer = AppDbContext.computer.Add(computer);
-                Logger.LogInformation($"Computer created with id {addedComputer.Entity.id}");
-            }
+
+			EntityEntry<Computer> addedComputer = AppDbContext.computer.Add(computer);
+            Logger.LogInformation($"Computer created with id {addedComputer.Entity.id}");
 
             AppDbContext.SaveChanges();
         }

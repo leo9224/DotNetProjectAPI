@@ -47,6 +47,7 @@ namespace DotNetProjectAPI.Services
             if (currentRoom is null) return null;
 
             currentRoom.name = room.name;
+            currentRoom.updated_at= DateTime.UtcNow;
 
             EntityEntry<Room> updatedRoom = AppDbContext.room.Update(currentRoom);
             AppDbContext.SaveChanges();
