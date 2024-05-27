@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DotNetProjectAPI.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/user_park")]
     public class UserParkController : ControllerBase

@@ -1,6 +1,5 @@
 ﻿using DotNetProjectLibrary.Models;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using static System.Net.Mime.MediaTypeNames;
 using Type = DotNetProjectLibrary.Models.Type;
 
 namespace DotNetProjectAPI.Services

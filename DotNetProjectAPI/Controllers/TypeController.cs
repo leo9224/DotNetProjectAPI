@@ -5,7 +5,7 @@ using Type = DotNetProjectLibrary.Models.Type;
 
 namespace DotNetProjectAPI.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/type")]
     public class TypeController : ControllerBase

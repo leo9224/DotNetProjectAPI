@@ -1,6 +1,4 @@
-﻿using DotNetProjectLibrary.Models;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Type = DotNetProjectLibrary.Models.Type;
 
 namespace DotNetProjectAPI.Services
