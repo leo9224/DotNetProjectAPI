@@ -19,6 +19,7 @@ builder.Services.AddScoped<ParkService>();
 builder.Services.AddScoped<RoomService>();
 builder.Services.AddScoped<ComputerService>();
 builder.Services.AddScoped<UserParkService>();
+builder.Services.AddScoped<TicketService>();
 
 // DB
 string host = "localhost:5433";

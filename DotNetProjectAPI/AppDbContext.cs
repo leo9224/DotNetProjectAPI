@@ -12,6 +12,7 @@ namespace DotNetProjectAPI
         public DbSet<Room> room { get; set; }
         public DbSet<Computer> computer { get; set; }
         public DbSet<UserPark> user_park { get; set; }
+        public DbSet<Ticket> ticket { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : base(dbContextOptions) { }
 
