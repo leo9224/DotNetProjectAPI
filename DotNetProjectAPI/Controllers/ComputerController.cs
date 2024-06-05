@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DotNetProjectAPI.Controllers
 {
-    //[Authorize]
     [ApiController]
     [Route("api/computer")]
     public class ComputerController : ControllerBase
@@ -17,9 +16,11 @@ namespace DotNetProjectAPI.Controllers
             ComputerService = computerService;
         }
 
+        [Authorize]
         [HttpGet]
         public ActionResult<List<Computer>> GetAll() => ComputerService.GetAll();
 
+        [Authorize]
         [HttpGet("{id}")]
         public ActionResult<Computer> Get(int id)
         {
@@ -30,6 +31,7 @@ namespace DotNetProjectAPI.Controllers
             return computer;
         }
 
+        [Authorize]
         [HttpGet("get_by_room/{id}")]
         public ActionResult<List<Computer>> GetByPark(int id)
         {
@@ -46,6 +48,7 @@ namespace DotNetProjectAPI.Controllers
             return CreatedAtAction(nameof(Get), new { id = computer.id }, computer);
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
@@ -56,6 +59,7 @@ namespace DotNetProjectAPI.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpPut("{id}/{newTypeId}")]
         public IActionResult Update(int id, int newTypeId)
         {

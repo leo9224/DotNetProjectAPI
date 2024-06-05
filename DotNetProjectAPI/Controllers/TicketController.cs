@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DotNetProjectAPI.Controllers
 {
-    //[Authorize]
     [ApiController]
     [Route("api/ticket")]
     public class TicketController : ControllerBase
@@ -17,6 +16,7 @@ namespace DotNetProjectAPI.Controllers
             TicketService = ticketService;
         }
 
+        [Authorize]
         [HttpGet]
         public ActionResult<List<Ticket>> GetAll() => TicketService.GetAll();
 
@@ -38,6 +38,7 @@ namespace DotNetProjectAPI.Controllers
             return CreatedAtAction(nameof(Get), new { id = ticket.id }, ticket);
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
