@@ -21,6 +21,13 @@ namespace DotNetProjectAPI.Controllers
             AuthenticationService = authenticationService;
         }
 
+        /// <summary>
+        /// Authenticate a user with email and password
+        /// </summary>
+        /// <param name="email">The user's email</param>
+        /// <param name="password">The user's password</param>
+        /// <returns>A JWT token for authentication and the user's ID</returns>
+        /// <exception cref="Unauthorized">Thrown when authentication failed</exception>
         [HttpGet("{email}/{password}")]
         public ActionResult<User> Authenticate(string email, string password)
         {

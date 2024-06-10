@@ -17,9 +17,19 @@ namespace DotNetProjectAPI.Controllers
             ParkService = parkService;
         }
 
+        /// <summary>
+        /// Get all parks
+        /// </summary>
+        /// <returns>A list of Park objects</returns>
         [HttpGet]
         public ActionResult<List<Park>> GetAll() => ParkService.GetAll();
 
+        /// <summary>
+        /// Get a park by ID
+        /// </summary>
+        /// <param name="id">The park's ID</param>
+        /// <returns>The park with the provided ID</returns>
+        /// <exception cref="NotFound">Thrown when the provided ID doesn't exist</exception>
         [HttpGet("{id}")]
         public ActionResult<Park> Get(int id)
         {
@@ -30,6 +40,11 @@ namespace DotNetProjectAPI.Controllers
             return park;
         }
 
+        /// <summary>
+        /// Create a park
+        /// </summary>
+        /// <param name="computer">The Park object</param>
+        /// <returns>The created Park object</returns>
         [HttpPost]
         public ActionResult<Park> Create(Park park)
         {
@@ -38,6 +53,13 @@ namespace DotNetProjectAPI.Controllers
             return newPark;
         }
 
+        /// <summary>
+        /// Update a park
+        /// </summary>
+        /// <param name="id">The park's ID</param>
+        /// <param name="park">The Park object</param>
+        /// <returns>A success status</returns>
+        /// <exception cref="NotFound">Thrown when the provided ID doesn't exist</exception>
         [HttpPut("{id}")]
         public IActionResult Update(int id, Park park)
         {
@@ -48,6 +70,12 @@ namespace DotNetProjectAPI.Controllers
             return Ok(updatedPark);
         }
 
+        /// <summary>
+        /// Delete a park
+        /// </summary>
+        /// <param name="id">The park's ID</param>
+        /// <returns>A success status</returns>
+        /// <exception cref="NotFound">Thrown when the provided ID doesn't exist</exception>
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

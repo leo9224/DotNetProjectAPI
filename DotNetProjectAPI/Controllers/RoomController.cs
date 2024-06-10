@@ -17,9 +17,19 @@ namespace DotNetProjectAPI.Controllers
             RoomService = roomService;
         }
 
+        /// <summary>
+        /// Get all rooms
+        /// </summary>
+        /// <returns>A list of Room objects</returns>
         [HttpGet]
         public ActionResult<List<Room>> GetAll() => RoomService.GetAll();
 
+        /// <summary>
+        /// Get a room by ID
+        /// </summary>
+        /// <param name="id">The room's ID</param>
+        /// <returns>The room with the provided ID</returns>
+        /// <exception cref="NotFound">Thrown when the provided ID doesn't exist</exception>
         [HttpGet("{id}")]
         public ActionResult<Room> Get(int id)
         {
@@ -30,6 +40,12 @@ namespace DotNetProjectAPI.Controllers
             return room;
         }
 
+        /// <summary>
+        /// Get the rooms in a park
+        /// </summary>
+        /// <param name="id">The park's ID</param>
+        /// <returns>The list of the park's rooms</returns>
+        /// <exception cref="NotFound">Thrown when the provided ID doesn't exist</exception>
         [HttpGet("get_by_park/{id}")]
         public ActionResult<List<Room>> GetByPark(int id)
         {
@@ -38,6 +54,11 @@ namespace DotNetProjectAPI.Controllers
             return rooms;
         }
 
+        /// <summary>
+        /// Create a room
+        /// </summary>
+        /// <param name="computer">The Room object</param>
+        /// <returns>The created Room object</returns>
         [HttpPost]
         public IActionResult Create(Room room)
         {
@@ -46,6 +67,13 @@ namespace DotNetProjectAPI.Controllers
             return CreatedAtAction(nameof(Get), new { id = room.id }, room);
         }
 
+        /// <summary>
+        /// Update a room
+        /// </summary>
+        /// <param name="id">The room's ID</param>
+        /// <param name="room">The Room object</param>
+        /// <returns>A success status</returns>
+        /// <exception cref="NotFound">Thrown when the provided ID doesn't exist</exception>
         [HttpPut("{id}")]
         public IActionResult Update(int id, Room room)
         {
@@ -56,6 +84,12 @@ namespace DotNetProjectAPI.Controllers
             return Ok(updatedRoom);
         }
 
+        /// <summary>
+        /// Delete a room
+        /// </summary>
+        /// <param name="id">The room's ID</param>
+        /// <returns>A success status</returns>
+        /// <exception cref="NotFound">Thrown when the provided ID doesn't exist</exception>
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

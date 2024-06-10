@@ -16,10 +16,20 @@ namespace DotNetProjectAPI.Controllers
             ComputerService = computerService;
         }
 
+        /// <summary>
+        /// Get all computers
+        /// </summary>
+        /// <returns>A list of Computer objects</returns>
         [Authorize]
         [HttpGet]
         public ActionResult<List<Computer>> GetAll() => ComputerService.GetAll();
 
+        /// <summary>
+        /// Get a computer by ID
+        /// </summary>
+        /// <param name="id">The computer's ID</param>
+        /// <returns>The computer with the provided ID</returns>
+        /// <exception cref="NotFound">Thrown when the provided ID doesn't exist</exception>
         [Authorize]
         [HttpGet("{id}")]
         public ActionResult<Computer> Get(int id)
@@ -31,6 +41,11 @@ namespace DotNetProjectAPI.Controllers
             return computer;
         }
 
+        /// <summary>
+        /// Get all computers in a park
+        /// </summary>
+        /// <param name="id">The park's ID</param>
+        /// <returns>A list of Computer objects</returns>
         [Authorize]
         [HttpGet("get_by_room/{id}")]
         public ActionResult<List<Computer>> GetByPark(int id)
@@ -40,6 +55,11 @@ namespace DotNetProjectAPI.Controllers
             return computers;
         }
 
+        /// <summary>
+        /// Create a computer
+        /// </summary>
+        /// <param name="computer">The Computer object</param>
+        /// <returns>The created Computer object</returns>
         [HttpPost]
         public IActionResult Create(Computer computer)
         {
@@ -48,6 +68,12 @@ namespace DotNetProjectAPI.Controllers
             return CreatedAtAction(nameof(Get), new { id = computer.id }, computer);
         }
 
+        /// <summary>
+        /// Delete a computer
+        /// </summary>
+        /// <param name="id">The computer's ID</param>
+        /// <returns>A success status</returns>
+        /// <exception cref="NotFound">Thrown when the provided ID doesn't exist</exception>
         [Authorize]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
@@ -55,17 +81,6 @@ namespace DotNetProjectAPI.Controllers
             Computer? computer = ComputerService.Delete(id);
 
             if (computer is null) return NotFound();
-
-            return Ok();
-        }
-
-        [Authorize]
-        [HttpPut("{id}/{newTypeId}")]
-        public IActionResult Update(int id, int newTypeId)
-        {
-            Computer? newComputer = ComputerService.UpdateType(id, newTypeId);
-
-            if (newComputer is null) return NotFound();
 
             return Ok();
         }

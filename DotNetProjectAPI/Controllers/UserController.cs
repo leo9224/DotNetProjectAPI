@@ -17,9 +17,19 @@ namespace DotNetProjectAPI.Controllers
             UserService = userService;
         }
 
+        /// <summary>
+        /// Get all users
+        /// </summary>
+        /// <returns>A list of User objects</returns>
         [HttpGet]
         public ActionResult<List<User>> GetAll() => UserService.GetAll();
 
+        /// <summary>
+        /// Get a user by ID
+        /// </summary>
+        /// <param name="id">The user's ID</param>
+        /// <returns>The user with the provided ID</returns>
+        /// <exception cref="NotFound">Thrown when the provided ID doesn't exist</exception>
         [HttpGet("{id}")]
         public ActionResult<User> Get(int id)
         {
@@ -30,6 +40,11 @@ namespace DotNetProjectAPI.Controllers
             return user;
         }
 
+        /// <summary>
+        /// Create a user
+        /// </summary>
+        /// <param name="computer">The User object</param>
+        /// <returns>The created User object</returns>
         [HttpPost]
         public IActionResult Create(User user)
         {
@@ -38,6 +53,12 @@ namespace DotNetProjectAPI.Controllers
             return CreatedAtAction(nameof(Get), new { id = user.id }, user);
         }
 
+        /// <summary>
+        /// Delete a user
+        /// </summary>
+        /// <param name="id">The user's ID</param>
+        /// <returns>A success status</returns>
+        /// <exception cref="NotFound">Thrown when the provided ID doesn't exist</exception>
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
@@ -48,6 +69,13 @@ namespace DotNetProjectAPI.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Update a user's password
+        /// </summary>
+        /// <param name="id">The user's ID</param>
+        /// <param name="newPassword">The new password</param>
+        /// <returns>A success status</returns>
+        /// <exception cref="NotFound">Thrown when the provided ID doesn't exist</exception>
         [HttpPut("{id}/{newPassword}")]
         public IActionResult Update(int id, string newPassword)
         {
